@@ -24,11 +24,6 @@ fun main(args: Array<String>){
     transaction {
         SchemaUtils.create(Canciones)
         SchemaUtils.create(CancionesFavoritas)
-        /**val url = "https://next.json-generator.com/api/json/get/EkeSgmXycS"
-        val (request, response, result) = Fuel.get(url).responseObject(Cancion.CancionArrayDeserializer())
-        val (canciones, err) = result
-        //    canciones?.forEach { CancionFavorita.insert{it} }
-        //}**/
         if (canciones != null) {
             for (cancion in canciones) {
                 Canciones.insert {
@@ -84,7 +79,7 @@ fun main(args: Array<String>){
                     println("Deseas agregar alguna a tus favoritos?")
                     val confirmar = readLine()!!.toString()
                     if (confirmar == "si") {
-                        println("Cual?")
+                        println("Cual? (escriba el id)")
                         val numero = readLine()!!.toInt()
                         for (c in Canciones.select { Canciones.id.eq(numero) }) {
                             c[Canciones.isFavorite] = true
@@ -136,7 +131,6 @@ fun main(args: Array<String>){
                         for (c in Canciones.select { Canciones.id.eq(numero) }) {
                             c[Canciones.isFavorite] = true
                             CancionesFavoritas.insert {
-                                it[id]=c[Canciones.id]
                                 it[isFavorite] = c[Canciones.isFavorite]
                                 it[year] = c[Canciones.year]
                                 it[country] = c[Canciones.country]
